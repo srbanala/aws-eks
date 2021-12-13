@@ -1,0 +1,71 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+
+before_install:
+  - docker build  -t anreddy/django-polls -t anreddy/django-polls:$SHA -f Dockerfile.dev .
+  - docker run --rm  -it  amazon/aws-cli --version
+
+  #INstall kubernetes cli
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+
+  # Install AWS CLI
+  - if ! [ -x "$(command -v aws)" ];
+   then curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" ;
+   unzip awscliv2.zip ; sudo ./aws/install ;
+   fi
+
+
+  # export environment variables for AWS CLI (using Travis environment variables)
+  - export AWS_ACCESS_KEY_ID=${Aws_Access_key}
+  - export AWS_SECRET_ACCESS_KEY=${Aws_Secret_Key}
+  - export AWS_DEFAULT_REGION=us-east-1
+  - export password_postgres=${POSTGRES_PASSWORD_TEMP}
+  # Setup kubectl config to use the desired AWS EKS cluster
+  #- aws sts get-caller-identity
+  - aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION} --name multi-cluster
+  - kubectl get svc
+  - kubectl get nodes
+
+  ### One Time setup ###
+   #- kubectl delete secret postgres-password
+ # - kubectl create secret generic postgres-password --from-literal POSTGRES_PASSWORD=${password_postgres}
+ # - kubectl create secret generic postgres-password --from-literal POSTGRES_PASSWORD=${POSTGRES_PASSWORD_TEMP}
+
+  ### To delete existing deployments
+
+  #- kubectl delete deployment polls-deployment
+  #- kubectl delete deployment postgres-deployment
+  #- kubectl delete deployment pgadmin-deployment
+
+### AWS load balancer for ingress
+ # - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.4/deploy/static/provider/aws/deploy.yaml
+ # installing helm to nginx ingress
+  #- curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+  #- chmod 700 get_helm.sh
+  #- ./get_helm.sh
+
+
+
+script:
+  - docker run anreddy/django-polls python3 ./mysite/manage.py test run
+
+
+after_success:
+  #- docker build -t anreddy/django-polls -f Dockerfile.dev
+  # Login to Docker cli
+  - echo "$DOCKER_PASSWORD"|docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub.
+  - docker push anreddy/django-polls
+  - docker push anreddy/django-polls:$SHA
+
+deploy:
+  - provider: script
+    script:  bash k8s/deploy.sh
+    on:
+      branch: feature

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: polls-pod
+  labels:
+    component: web
+spec:
+  containers:
+    - name: polls
+      #image: anreddy/nginx-image
+      image: anreddy/polls_sqlite
+      ports:
+        - containerPort: 8000

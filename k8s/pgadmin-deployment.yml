@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: pgadmin
+  template:
+    metadata:
+      labels:
+        component: pgadmin
+    spec:
+      containers:
+        - name: pgadmin-container
+          image: dpage/pgadmin4
+          ports:
+            - containerPort: 5050
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: srbanala13@gmail.com
+            - name: PGADMIN_DEFAULT_PASSWORD
+              valueFrom:
+                 secretKeyRef:
+                   name: postgres-password
+                   key: POSTGRES_PASSWORD
+            - name: PGADMIN_LISTEN_PORT
+              value: '5050'
+           
+
+
+
