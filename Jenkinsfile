@@ -7,7 +7,7 @@ node {
       //     docker.build('polls')
       //       }
     stage ('K8S Deploy'){
-           sh 'kubectl apply -f k8s'
+           sh './kubectl apply -f k8s'
       }
     }
 
