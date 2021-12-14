@@ -25,7 +25,7 @@ pipeline {
 
           sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PSW}'
           sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PSW}'
-          _
+
           sh 'export AWS_DEFAULT_REGION=us-east-1'
           sh 'aws eks update-kubeconfig --region us-east-1 --name polls-cluster '
           sh 'kubectl apply -f k8s'
