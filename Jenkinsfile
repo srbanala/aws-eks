@@ -26,7 +26,7 @@ pipeline {
           sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
           sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
           sh 'export AWS_DEFAULT_REGION=us-east-1'
-          sh 'aws eks update-kubeconfig --region us-east-1 --name polls-cluster'
+          sh 'aws eks update-kubeconfig --region us-east-1 --name polls-cluster --role-arn arn:aws:iam::298693496319:role/AWS-MULTI-CLUSTER-ROLE'
           sh 'kubectl apply -f k8s'
           sh 'kubectl get svc'
           sh 'kubectl get nodes'
