@@ -1,7 +1,7 @@
 node {
   def image
-   //1// stage ('checkout')
-           checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/srbanala/aws-eks.git']]])
+   //1// stage ('checkout'){
+       checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/srbanala/aws-eks.git']]])
           }
          }
    //2//  stage('Docker Build'){
