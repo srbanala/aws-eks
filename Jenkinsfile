@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_CREDS=credentials('docker_id')
-        AWS_DEFAULT_REGION='US-EAST-1'
+        AWS_DEFAULT_REGION='us-east-1'
         AWS_ACCESS_KEY_ID=credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY=credentials('AWS_SECRET_ACCESS_KEY')
         }
@@ -23,7 +23,7 @@ pipeline {
           sh ' curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
           sh ' chmod +x ./kubectl'
           sh 'aws configure set aws_access_key_id=${AWS_ACCESS_KEY_ID}  aws_secret_access_key=${AWS_SECRET_ACCESS_KEY} '
-          sh 'aws eks update-kubeconfig   --name polls-cluster'
+          sh 'aws eks update-kubeconfig  --region ${AWS_DEFAULT_REGION} --name polls-cluster'
           sh 'kubectl get svc'
           sh 'kubectl get nodes'
             }
