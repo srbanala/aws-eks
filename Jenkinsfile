@@ -22,7 +22,7 @@ pipeline {
          steps {
           sh ' curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
           sh ' chmod +x ./kubectl'
-          sh 'aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION}  AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY_ID}--name polls-cluster'
+          sh 'aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION}  AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY_ID} --name polls-cluster'
           sh 'kubectl get svc'
           sh 'kubectl get nodes'
             }
