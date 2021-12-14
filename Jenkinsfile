@@ -24,6 +24,7 @@ pipeline {
           sh ' chmod +x ./kubectl'
           sh 'aws configure set aws_access_key_id=${AWS_ACCESS_KEY_ID}  aws_secret_access_key=${AWS_SECRET_ACCESS_KEY} '
           sh 'aws eks update-kubeconfig  --region ${AWS_DEFAULT_REGION} --name polls-cluster'
+          sh 'kubectl apply -f k8s'
           sh 'kubectl get svc'
           sh 'kubectl get nodes'
             }
