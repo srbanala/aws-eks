@@ -22,7 +22,8 @@ pipeline {
          steps {
           sh ' curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
           sh ' chmod +x ./kubectl'
-          sh 'aws configure set aws_access_key_id=${AWS_ACCESS_KEY_ID_PSW}; aws configure set  aws_secret_access_key=${AWS_SECRET_ACCESS_KEY_PSW} '
+          sh 'aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_PSW}'
+          sh ' aws configure set  aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_PSW} '
           sh 'aws eks update-kubeconfig  --name polls-cluster'
           sh 'kubectl apply -f k8s'
           sh 'kubectl get svc'
