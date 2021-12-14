@@ -19,11 +19,12 @@ RUN pip3 install virtualenv &&  virtualenv myenv \
 
 RUN  apt-get install -y libpq-dev &&   pip install psycopg2
 
-WORKDIR ./django-polls/dist
+#WORKDIR ./django-polls/dist
 
 COPY ./mysite  ./
+COPY ./django-polls-0.1.tar.gz ./
 
-RUN python3 -m pip install --user ./django-polls-0.1.tar.gz
+RUN python3 -m pip install --user ./django-polls-0.1.tar.gz  && rm django-polls-0.1.tar.gz
 
 EXPOSE 8080
 # Run Default Command.
