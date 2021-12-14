@@ -21,7 +21,6 @@ RUN  apt-get install -y libpq-dev &&   pip install psycopg2
 
 WORKDIR ./django-polls/dist
 
-COPY ./manage.py  ./
 COPY ./mysite  ./
 
 RUN python3 -m pip install --user ./django-polls-0.1.tar.gz
