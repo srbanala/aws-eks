@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_CREDS=credentials('docker_id')
+        AWS_DEFAULT_REGION='US-EAST-1'
         }
     stages {
       stage('Build'){
