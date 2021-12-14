@@ -19,7 +19,6 @@ pipeline {
          steps {
           sh ' curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
           sh ' chmod +x ./kubectl'
-          sh ' mv ./kubectl /usr/local/bin/kubectl'
           sh 'aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION} --name polls-cluster'
           sh 'kubectl get svc'
           sh 'kubectl get nodes'
