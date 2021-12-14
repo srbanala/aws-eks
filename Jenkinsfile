@@ -22,7 +22,7 @@ pipeline {
          steps {
           sh 'curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl'
           sh 'chmod +x ./kubectl'
-          sh 'curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip'
+          sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" '
           sh 'unzip awscliv2.zip'
           sh './aws/install'
 
